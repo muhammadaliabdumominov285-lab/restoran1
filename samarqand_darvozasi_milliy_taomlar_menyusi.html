@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samarqand Darvozasi — Milliy va Zamonaviy Taomlar Restorani</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        espresso: {
+                            950: '#0f0b09',
+                            900: '#17110e',
+                            800: '#231a15',
+                            700: '#32251e',
+                        },
+                        gold: {
+                            400: '#f59e0b',
+                            500: '#d97706',
+                            600: '#b45309',
+                        },
+                        terracotta: {
+                            500: '#c2410c',
+                            600: '#9a3412',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-espresso-950 text-stone-100 font-sans antialiased selection:bg-gold-500 selection:text-white overflow-x-hidden">
+
+    <!-- ==================== HEADER / NAVBAR ==================== -->
+    <header class="sticky top-0 z-40 bg-espresso-950/90 backdrop-blur-md border-b border-stone-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-3">
+                
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center gap-3 group shrink-0">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-gold-400 to-terracotta-600 flex items-center justify-center shadow-lg shadow-gold-500/20 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-utensils text-espresso-950 text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-serif text-lg sm:text-xl font-bold tracking-wide text-amber-50 leading-tight">
+                            Samarqand <span class="text-gold-400">Darvozasi</span>
+                        </h1>
+                        <p class="text-[11px] text-stone-400 tracking-widest uppercase hidden sm:block">Milliy Taomlar Saroyi</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Search Input -->
+                <div class="hidden md:flex flex-1 max-w-md mx-4">
+                    <div class="relative w-full">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                        <input 
+                            type="text" 
+                            id="desktopSearchInput" 
+                            placeholder="Taom nomi yoki masalliqlar bo'yicha qidirish..." 
+                            class="w-full bg-espresso-900/90 border border-stone-700/80 text-stone-100 placeholder-stone-400 text-sm rounded-2xl pl-11 pr-9 py-2.5 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-all"
+                        >
+                        <button id="clearDesktopSearch" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white p-1">
+                            <i class="fa-solid fa-xmark text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Actions: Reserve & Cart -->
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                    <button 
+                        onclick="openReservationModal()" 
+                        class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl border border-gold-500/50 text-gold-400 hover:bg-gold-500 hover:text-espresso-950 font-medium text-sm transition-all duration-200"
+                    >
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Stol band qilish</span>
+                    </button>
+
+                    <button 
+                        onclick="toggleCartDrawer(true)" 
+                        class="relative inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-espresso-950 font-semibold text-sm shadow-lg shadow-gold-500/20 active:scale-95 transition-all"
+                        aria-label="Savatchani ochish"
+                    >
+                        <i class="fa-solid fa-bag-shopping text-base"></i>
+                        <span class="hidden sm:inline">Savatcha</span>
+                        <span id="cartBadge" class="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 text-xs font-bold bg-espresso-950 text-gold-400 rounded-full transition-transform">
+                            0
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="pb-3 md:hidden">
+                <div class="relative w-full">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                    <input 
+                        type="text" 
+                        id="mobileSearchInput" 
+                        placeholder="Taom yoki masalliq qidirish (masalan: osh, go'sht)..." 
+                        class="w-full bg-espresso-900 border border-stone-700/80 text-stone-100 placeholder-stone-400 text-sm rounded-xl pl-10 pr-9 py-2.5 focus:outline-none focus:border-gold-400 transition-all"
+                    >
+                    <button id="clearMobileSearch" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white p-1">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HERO BANNER ==================== -->
+    <section class="relative overflow-hidden border-b border-stone-800/80">
+        <!-- Background Image with Dark Gradient Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img 
+                src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1920&q=80" 
+                alt="O'zbek milliy taomlari dasturxoni" 
+                onerror="this.src='https://placehold.co/1920x800/17110e/d97706?text=Samarqand+Darvozasi'"
+                class="w-full h-full object-cover object-center opacity-35 scale-105"
+            >
+            <div class="absolute inset-0 bg-gradient-to-r from-espresso-950 via-espresso-950/90 to-espresso-950/60"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-espresso-950 via-transparent to-espresso-950/40"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
+            <div class="max-w-2xl">
+                <!-- Status & Hours Pill -->
+                <div class="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 rounded-full bg-espresso-800/90 border border-gold-500/30 text-xs sm:text-sm text-amber-200 mb-6 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Ochiq: Har kuni 09:00 – 23:30</span>
+                    <span class="text-stone-500">•</span>
+                    <span class="text-gold-400 font-medium">Bepul yetkazib berish (150 000 so'mdan)</span>
+                </div>
+
+                <h2 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-amber-50 leading-tight mb-4">
+                    Sharqona mehmondo'stlik va <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-amber-200">haqiqiy ta'm</span> uyg'unligi
+                </h2>
+
+                <p class="text-stone-300 text-base sm:text-lg leading-relaxed mb-8">
+                    Asriy an'analar asosida o'choqda damlangan to'y oshi, sersuv cho'g' kaboblar va yangi uzilgan ko'katlardan tayyorlangan salatlarimizdan bahramand bo'ling.
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+                    <a 
+                        href="#menu-section" 
+                        class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-espresso-950 font-bold text-sm sm:text-base shadow-xl shadow-gold-500/20 transition-all hover:-translate-y-0.5"
+                    >
+                        <span>Menyuni ko'rish</span>
+                        <i class="fa-solid fa-arrow-down text-sm"></i>
+                    </a>
+
+                    <button 
+                        onclick="openReservationModal()" 
+                        class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-espresso-800/90 hover:bg-espresso-700 text-amber-50 border border-stone-700 hover:border-gold-400/50 font-semibold text-sm sm:text-base transition-all"
+                    >
+                        <i class="fa-regular fa-calendar-check text-gold-400"></i>
+                        <span>Stol band qilish</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MAIN MENU SECTION ==================== -->
+    <main id="menu-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        
+        <!-- Section Heading & Info -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div>
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">Bizning Dasturxon</span>
+                <h3 class="font-serif text-2xl sm:text-3xl font-bold text-amber-50 mt-1">Restoran Menyusi</h3>
+            </div>
+            <p id="dishCountLabel" class="text-sm text-stone-400">Jami 18 ta taom ko'rsatilmoqda</p>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="sticky top-[125px] md:top-20 z-30 bg-espresso-950/95 backdrop-blur-md py-3 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 border-b border-stone-800/60">
+            <div id="categoryTabs" class="flex items-center gap-2.5 overflow-x-auto pb-1 no-scrollbar">
+                <!-- Category buttons rendered by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Menu Grid -->
+        <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dish cards rendered by JavaScript -->
+        </div>
+
+        <!-- Empty Search State -->
+        <div id="emptyState" class="hidden text-center py-16 px-4 bg-espresso-900/50 rounded-3xl border border-stone-800">
+            <div class="w-16 h-16 rounded-2xl bg-espresso-800 text-gold-400 flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-bowl-rice"></i>
+            </div>
+            <h4 class="font-serif text-xl font-bold text-amber-50 mb-2">Afsuski, hech narsa topilmadi</h4>
+            <p class="text-stone-400 text-sm max-w-md mx-auto mb-6">
+                Qidiruv so'zingizga mos taom topilmadi. Boshqa so'z bilan qidirib ko'ring yoki barcha taomlar ro'yxatiga qayting.
+            </p>
+            <button 
+                onclick="resetFilters()" 
+                class="px-5 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-espresso-950 font-semibold text-sm transition-colors"
+            >
+                Barcha taomlarni ko'rsatish
+            </button>
+        </div>
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-espresso-900 border-t border-stone-800/80 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-terracotta-600 flex items-center justify-center">
+                            <i class="fa-solid fa-utensils text-espresso-950"></i>
+                        </div>
+                        <span class="font-serif text-xl font-bold text-amber-50">Samarqand Darvozasi</span>
+                    </div>
+                    <p class="text-stone-400 text-sm leading-relaxed">
+                        Milliy o'zbek oshxonasining eng sara taomlari, oilaviy shinam muhit va tezkor yetkazib berish xizmati.
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="font-semibold text-amber-50 mb-3">Manzil va Aloqa</h5>
+                    <ul class="space-y-2.5 text-sm text-stone-400">
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-location-dot text-gold-400 w-4"></i>
+                            <span>Toshkent sh., Shayxontohur tumani, Samarqand Darvoza ko'chasi, 45-uy</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-phone text-gold-400 w-4"></i>
+                            <span>+998 (71) 200-45-45</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-regular fa-clock text-gold-400 w-4"></i>
+                            <span>Har kuni: 09:00 dan 23:30 gacha</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="font-semibold text-amber-50 mb-3">Tezkor harakatlar</h5>
+                    <p class="text-stone-400 text-sm mb-4">Bayram va oilaviy tadbirlar uchun oldindan joy band qiling.</p>
+                    <button 
+                        onclick="openReservationModal()" 
+                        class="px-5 py-2.5 rounded-xl bg-espresso-800 hover:bg-espresso-700 border border-gold-500/40 text-gold-400 font-medium text-sm transition-colors"
+                    >
+                        <i class="fa-regular fa-calendar-check mr-2"></i>Stol band qilish
+                    </button>
+                </div>
+            </div>
+            <div class="border-t border-stone-800/80 mt-8 pt-6 text-center text-xs text-stone-500">
+                © 2026 Samarqand Darvozasi Restorani. Barcha huquqlar himoyalangan.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== CART DRAWER (SLIDE-OVER) ==================== -->
+    <div id="cartOverlay" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity"></div>
+        
+        <!-- Drawer Panel -->
+        <div class="fixed inset-y-0 right-0 w-full max-w-md bg-espresso-900 border-l border-stone-800 shadow-2xl flex flex-col z-10">
+            
+            <!-- Drawer Header -->
+            <div class="flex items-center justify-between px-6 py-5 border-b border-stone-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-gold-500/15 text-gold-400 flex items-center justify-center">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-lg font-bold text-amber-50">Sizning Savatchangiz</h3>
+                        <p id="cartDrawerSubtitle" class="text-xs text-stone-400">0 ta mahsulot tanlangan</p>
+                    </div>
+                </div>
+                <button onclick="toggleCartDrawer(false)" class="w-9 h-9 rounded-xl bg-espresso-800 hover:bg-espresso-700 text-stone-300 flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Drawer Body (Scrollable) -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6">
+                
+                <!-- Cart Items List -->
+                <div id="cartItemsContainer" class="space-y-3">
+                    <!-- Cart items injected via JS -->
+                </div>
+
+                <!-- Empty Cart Message -->
+                <div id="emptyCartMessage" class="text-center py-12">
+                    <div class="w-16 h-16 rounded-2xl bg-espresso-800 text-stone-500 flex items-center justify-center mx-auto mb-4 text-2xl">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                    </div>
+                    <h4 class="font-medium text-amber-50 mb-1">Savatchangiz hozircha bo'sh</h4>
+                    <p class="text-xs text-stone-400 mb-5">Menyudan o'zingizga yoqqan milliy taomlarni tanlang</p>
+                    <button onclick="toggleCartDrawer(false)" class="px-4 py-2 rounded-xl bg-gold-500/20 text-gold-400 hover:bg-gold-500 hover:text-espresso-950 text-xs font-semibold transition-colors">
+                        Menyuga qaytish
+                    </button>
+                </div>
+
+                <!-- Order Form (Visible only when cart has items) -->
+                <form id="orderForm" class="hidden space-y-4 pt-4 border-t border-stone-800">
+                    <h4 class="font-semibold text-sm text-amber-50">Buyurtma turini tanlang</h4>
+                    
+                    <!-- Order Type Toggle -->
+                    <div class="grid grid-cols-2 gap-2 p-1 bg-espresso-950 rounded-2xl border border-stone-800">
+                        <button 
+                            type="button" 
+                            id="btnDelivery" 
+                            onclick="setOrderType('delivery')" 
+                            class="py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 bg-gold-500 text-espresso-950 transition-all"
+                        >
+                            <i class="fa-solid fa-motorcycle"></i>
+                            <span>Yetkazib berish</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            id="btnDineIn" 
+                            onclick="setOrderType('dinein')" 
+                            class="py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 text-stone-400 hover:text-white transition-all"
+                        >
+                            <i class="fa-solid fa-chair"></i>
+                            <span>Stolga buyurtma</span>
+                        </button>
+                    </div>
+
+                    <!-- Delivery Fields -->
+                    <div id="deliveryFields" class="space-y-3">
+                        <div>
+                            <label class="block text-xs text-stone-400 mb-1">Telefon raqamingiz *</label>
+                            <input 
+                                type="tel" 
+                                id="deliveryPhone" 
+                                placeholder="+998 90 123 45 67" 
+                                class="w-full bg-espresso-950 border border-stone-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:border-gold-400"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-xs text-stone-400 mb-1">Yetkazib berish manzili *</label>
+                            <input 
+                                type="text" 
+                                id="deliveryAddress" 
+                                placeholder="Tuman, ko'cha, uy va xonadon raqami" 
+                                class="w-full bg-espresso-950 border border-stone-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:border-gold-400"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Dine-In Fields -->
+                    <div id="dineInFields" class="hidden space-y-3">
+                        <div>
+                            <label class="block text-xs text-stone-400 mb-1">Stol raqami *</label>
+                            <input 
+                                type="number" 
+                                id="tableNumber" 
+                                min="1" 
+                                max="50" 
+                                placeholder="Masalan: 7" 
+                                class="w-full bg-espresso-950 border border-stone-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:border-gold-400"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-xs text-stone-400 mb-1">Qo'shimcha izoh (ixtiyoriy)</label>
+                            <input 
+                                type="text" 
+                                id="orderNote" 
+                                placeholder="Masalan: achchiq qalampir solinmasin" 
+                                class="w-full bg-espresso-950 border border-stone-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:border-gold-400"
+                            >
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Drawer Footer (Totals & Submit) -->
+            <div id="cartFooter" class="hidden p-6 bg-espresso-950 border-t border-stone-800 space-y-4">
+                <div class="space-y-1.5 text-sm">
+                    <div class="flex justify-between text-stone-400">
+                        <span>Taomlar narxi:</span>
+                        <span id="subtotalPrice">0 so'm</span>
+                    </div>
+                    <div id="deliveryFeeRow" class="flex justify-between text-stone-400">
+                        <span>Yetkazib berish:</span>
+                        <span id="deliveryFeeText">15 000 so'm</span>
+                    </div>
+                    <div class="flex justify-between text-base font-bold text-amber-50 pt-2 border-t border-stone-800">
+                        <span>Jami to'lov:</span>
+                        <span id="totalPrice" class="text-gold-400">0 so'm</span>
+                    </div>
+                </div>
+
+                <button 
+                    type="button" 
+                    onclick="submitOrder()" 
+                    class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-espresso-950 font-bold text-sm shadow-lg shadow-gold-500/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+                >
+                    <span>Buyurtmani rasmiylashtirish</span>
+                    <i class="fa-solid fa-check"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TABLE RESERVATION MODAL ==================== -->
+    <div id="reservationModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div onclick="closeReservationModal()" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+        
+        <div class="relative z-10 w-full max-w-md bg-espresso-900 border border-stone-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-gold-400">Oldindan band qilish</span>
+                    <h3 class="font-serif text-2xl font-bold text-amber-50 mt-0.5">Stol band qilish</h3>
+                </div>
+                <button onclick="closeReservationModal()" class="w-9 h-9 rounded-xl bg-espresso-800 hover:bg-espresso-700 text-stone-300 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="reservationForm" onsubmit="submitReservation(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-stone-300 mb-1.5">Ismingiz *</label>
+                    <input 
+                        type="text" 
+                        id="resName" 
+                        required 
+                        placeholder="Ism va familiyangiz" 
+                        class="w-full bg-espresso-950 border border-stone-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:border-gold-400"
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-stone-300 mb-1.5">Telefon raqamingiz *</label>
+                    <input 
+                        type="tel" 
+                        id="resPhone" 
+                        required 
+                        placeholder="+998 90 123 45 67" 
+                        class="w-full bg-espresso-950 border border-stone-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:border-gold-400"
+                    >
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-stone-300 mb-1.5">Mehmonlar soni *</label>
+                        <select id="resGuests" class="w-full bg-espresso-950 border border-stone-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-gold-400">
+                            <option value="2 kishi">2 kishi</option>
+                            <option value="4 kishi" selected>4 kishi</option>
+                            <option value="6 kishi">6 kishi</option>
+                            <option value="8 kishi">8 kishi</option>
+                            <option value="10+ kishi (Xontaxta)">10+ kishi (Xontaxta)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-stone-300 mb-1.5">Sana va vaqt *</label>
+                        <input 
+                            type="datetime-local" 
+                            id="resDateTime" 
+                            required 
+                            class="w-full bg-espresso-950 border border-stone-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-gold-400"
+                        >
+                    </div>
+                </div>
+
+                <button 
+                    type="submit" 
+                    class="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-espresso-950 font-bold text-sm shadow-lg shadow-gold-500/20 transition-all"
+                >
+                    Joyni tasdiqlash
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== CONFIRMATION MODAL & TOAST ==================== -->
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmationModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div onclick="closeConfirmationModal()" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="relative z-10 w-full max-w-sm bg-espresso-900 border border-gold-500/40 rounded-3xl p-6 sm:p-7 text-center shadow-2xl">
+            <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-4 text-3xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h4 id="confirmTitle" class="font-serif text-2xl font-bold text-amber-50 mb-2">Buyurtma qabul qilindi!</h4>
+            <p id="confirmMessage" class="text-sm text-stone-300 leading-relaxed mb-6">
+                Operatorlarimiz tez orada siz bilan bog'lanishadi. Yoqimli ishtaha!
+            </p>
+            <button 
+                onclick="closeConfirmationModal()" 
+                class="w-full py-3 rounded-2xl bg-gold-500 hover:bg-gold-400 text-espresso-950 font-bold text-sm transition-colors"
+            >
+                Tushunarli
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Notification Toast -->
+    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300">
+        <div class="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-espresso-800 border border-gold-500/40 text-amber-50 text-xs sm:text-sm font-medium shadow-2xl">
+            <i id="toastIcon" class="fa-solid fa-check-circle text-gold-400"></i>
+            <span id="toastText">Savatga qo'shildi</span>
+        </div>
+    </div>
+
+    <!-- Hide scrollbar utility -->
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        // 1. MENU DATA (O'zbek milliy taomlari ma'lumotlar bazasi)
+        const CATEGORIES = [
+            { id: 'all', name: 'Barchasi', icon: 'fa-border-all' },
+            { id: 'milliy', name: 'Milliy taomlar', icon: 'fa-bowl-rice' },
+            { id: 'kabob', name: 'Kaboblar', icon: 'fa-fire-flame-curved' },
+            { id: 'suyuq', name: 'Suyuq taomlar', icon: 'fa-mug-hot' },
+            { id: 'salat', name: 'Salatlar', icon: 'fa-leaf' },
+            { id: 'ichimlik', name: 'Ichimliklar', icon: 'fa-glass-water' },
+            { id: 'shirinlik', name: 'Shirinliklar', icon: 'fa-cookie-bite' }
+        ];
+
+        const MENU_ITEMS = [
+            // Milliy taomlar
+            {
+                id: 1,
+                category: 'milliy',
+                name: "Samarqand To'y Oshi",
+                ingredients: "Lazer guruchi, yumshoq mol go'shti, sariq sabzi, no'xat, mayiz, zira va bedana tuxumi.",
+                portion: "450 g",
+                price: 55000,
+                badge: "Xit taom",
+                image: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 2,
+                category: 'milliy',
+                name: "Qozon Kabob (Qo'y go'shtidan)",
+                ingredients: "Sarxil qo'y qovurg'alari, tillarang qovurilgan kartoshka, zira va yangi piyoz halqalari.",
+                portion: "400 g",
+                price: 78000,
+                badge: "Oshpaz tavsiyasi",
+                image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 3,
+                category: 'milliy',
+                name: "Bug'da Pishgan Manti",
+                ingredients: "Yupqa xamir, mayda to'g'ralgan mol go'shti, dumba yog'i, piyoz, qora murch va smetana.",
+                portion: "5 dona (380 g)",
+                price: 42000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 4,
+                category: 'milliy',
+                name: "Toshkentcha Norin",
+                ingredients: "Qo'lda kesilgan mayin xamir, qaynatilgan ot go'shti, qazi bo'laklari va xushbo'y zira.",
+                portion: "320 g",
+                price: 52000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=800&q=80"
+            },
+
+            // Kaboblar
+            {
+                id: 5,
+                category: 'kabob',
+                name: "G'ijduvon Qiyma Kabob",
+                ingredients: "Maxsus ziravorlar bilan marinadlangan mayin mol va qo'y go'shti qiymasi, sirka va piyoz.",
+                portion: "1 six (180 g)",
+                price: 26000,
+                badge: "Mashhur",
+                image: "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 6,
+                category: 'kabob',
+                name: "Jaz Kabob (Qo'y go'shti)",
+                ingredients: "Ko'mirda pishirilgan sersuv qo'y go'shti bo'laklari, dumba yog'i va kashnich.",
+                portion: "1 six (200 g)",
+                price: 34000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 7,
+                category: 'kabob',
+                name: "Tovuq Qanotchalari Kabobi",
+                ingredients: "Qaymoq va sarimsoqli sousda marinadlangan qarsildoq tovuq qanotlari.",
+                portion: "1 six (220 g)",
+                price: 28000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=800&q=80"
+            },
+
+            // Suyuq taomlar
+            {
+                id: 8,
+                category: 'suyuq',
+                name: "Uyg'urcha Cho'zma Lag'mon",
+                ingredients: "Qo'lda cho'zilgan lag'mon xamiri, mol go'shti, bulg'or qalampiri, selderey va pomidor qaylasi.",
+                portion: "450 ml",
+                price: 44000,
+                badge: "Xit taom",
+                image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 9,
+                category: 'suyuq',
+                name: "Ko'za Sho'rva",
+                ingredients: "Sopol ko'zada dimlangan qo'y go'shti, no'xat, sabzi, kartoshka, sholg'om va rayhon.",
+                portion: "450 ml",
+                price: 46000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 10,
+                category: 'suyuq',
+                name: "Mastava (Qatiqli)",
+                ingredients: "Guruch, mayda to'g'ralgan go'sht, sabzi, kartoshka, pomidor va yangi suzma qatiq.",
+                portion: "400 ml",
+                price: 35000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80"
+            },
+
+            // Salatlar
+            {
+                id: 11,
+                category: 'salat',
+                name: "Achichuk Salati",
+                ingredients: "Yangi pishgan pushti pomidorlar, yupqa to'g'ralgan oq piyoz, achchiq qalampir va rayhon.",
+                portion: "220 g",
+                price: 18000,
+                badge: "Osh bilan zo'r",
+                image: "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 12,
+                category: 'salat',
+                name: "Bahor Salati",
+                ingredients: "Yangi bodring, pomidor, rediska, ko'k piyoz, shivit va tabiiy suzma qaylasi.",
+                portion: "250 g",
+                price: 22000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 13,
+                category: 'salat',
+                name: "An'anaviy Olivye",
+                ingredients: "Qaynatilgan mol tili, kartoshka, sabzi, yashil no'xat, tuzlangan bodring va mayonez.",
+                portion: "240 g",
+                price: 26000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80"
+            },
+
+            // Ichimliklar
+            {
+                id: 14,
+                category: 'ichimlik',
+                name: "Limon va Yalpizli Ko'k Choy",
+                ingredients: "95-sonli sara ko'k choy, yangi limon bo'laklari, yalpiz barglari va novvot.",
+                portion: "1 choynak (700 ml)",
+                price: 16000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 15,
+                category: 'ichimlik',
+                name: "Uy Limonadi (Tarxun va Limon)",
+                ingredients: "Yangi siqilgan limon sharbati, tarxun giyohi, gazlangan suv va muz bo'laklari.",
+                portion: "1 litr (Grafin)",
+                price: 28000,
+                badge: "Salqin",
+                image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 16,
+                category: 'ichimlik',
+                name: "Muzdek Rayhonli Ayron",
+                ingredients: "Tabiiy qatiq, mineral suv, maydalangan rayhon barglari va chimdim tuz.",
+                portion: "300 ml",
+                price: 12000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=800&q=80"
+            },
+
+            // Shirinliklar
+            {
+                id: 17,
+                category: 'shirinlik',
+                name: "Asalli Samarqand Chak-chagi",
+                ingredients: "Qarsildoq xamir bo'laklari, tabiiy tog' asali, yong'oq va kunjut urug'lari.",
+                portion: "180 g",
+                price: 24000,
+                badge: null,
+                image: "https://images.unsplash.com/photo-1519676867240-f03562e64548?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 18,
+                category: 'shirinlik',
+                name: "Yong'oqli Sharqona Paxlava",
+                ingredients: "Ko'p qatlamli yupqa xamir, maydalangan grek yong'og'i, sariyog' va xushbo'y asal qiyomi.",
+                portion: "2 dona (160 g)",
+                price: 28000,
+                badge: "Shirin",
+                image: "https://images.unsplash.com/photo-1519676867240-f03562e64548?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        // 2. APPLICATION STATE
+        let selectedCategory = 'all';
+        let searchQuery = '';
+        let cart = []; // { id, qty }
+        let orderType = 'delivery'; // 'delivery' | 'dinein'
+        const DELIVERY_FEE = 15000;
+        const FREE_DELIVERY_THRESHOLD = 150000;
+
+        // 3. HELPER: FORMAT CURRENCY IN UZS
+        function formatPrice(amount) {
+            return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " so'm";
+        }
+
+        // 4. INITIALIZE APP
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderMenu();
+            updateCartUI();
+            setupSearchListeners();
+            setDefaultReservationDateTime();
+        });
+
+        // 5. RENDER CATEGORY TABS
+        function renderCategories() {
+            const container = document.getElementById('categoryTabs');
+            container.innerHTML = CATEGORIES.map(cat => {
+                const isActive = cat.id === selectedCategory;
+                return `
+                    <button 
+                        onclick="selectCategory('${cat.id}')"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                            isActive 
+                            ? 'bg-gradient-to-r from-gold-500 to-amber-600 text-espresso-950 font-bold shadow-md shadow-gold-500/20' 
+                            : 'bg-espresso-900 text-stone-300 hover:bg-espresso-800 hover:text-white border border-stone-800'
+                        }"
+                    >
+                        <i class="fa-solid ${cat.icon} text-xs"></i>
+                        <span>${cat.name}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectCategory(catId) {
+            selectedCategory = catId;
+            renderCategories();
+            renderMenu();
+        }
+
+        // 6. RENDER MENU CARDS
+        function renderMenu() {
+            const grid = document.getElementById('menuGrid');
+            const emptyState = document.getElementById('emptyState');
+            const countLabel = document.getElementById('dishCountLabel');
+
+            const query = searchQuery.trim().toLowerCase();
+
+            const filtered = MENU_ITEMS.filter(item => {
+                const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+                const matchesSearch = !query || 
+                    item.name.toLowerCase().includes(query) || 
+                    item.ingredients.toLowerCase().includes(query);
+                return matchesCategory && matchesSearch;
+            });
+
+            countLabel.textContent = `Jami ${filtered.length} ta taom ko'rsatilmoqda`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(item => {
+                const cartItem = cart.find(c => c.id === item.id);
+                const qty = cartItem ? cartItem.qty : 0;
+
+                return `
+                    <article class="group bg-espresso-900/90 border border-stone-800/90 hover:border-gold-500/40 rounded-3xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:shadow-black/40 hover:-translate-y-1">
+                        <div>
+                            <!-- Dish Image -->
+                            <div class="relative h-52 overflow-hidden bg-espresso-800">
+                                <img 
+                                    src="${item.image}" 
+                                    alt="${item.name}" 
+                                    loading="lazy"
+                                    onerror="this.src='https://placehold.co/600x400/231a15/f59e0b?text=${encodeURIComponent(item.name)}'"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-espresso-900 via-transparent to-transparent opacity-80"></div>
+                                
+                                ${item.badge ? `
+                                    <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-gold-500 text-espresso-950 text-xs font-bold shadow-md">
+                                        ${item.badge}
+                                    </span>
+                                ` : ''}
+
+                                <span class="absolute bottom-3 right-3.5 px-2.5 py-1 rounded-lg bg-espresso-950/85 backdrop-blur-sm border border-stone-700/70 text-stone-300 text-xs font-medium">
+                                    <i class="fa-solid fa-scale-balanced text-gold-400 mr-1"></i>${item.portion}
+                                </span>
+                            </div>
+
+                            <!-- Dish Content -->
+                            <div class="p-5 pb-3">
+                                <h4 class="font-serif text-xl font-bold text-amber-50 group-hover:text-gold-400 transition-colors mb-2">
+                                    ${item.name}
+                                </h4>
+                                <p class="text-stone-400 text-sm leading-relaxed line-clamp-2">
+                                    ${item.ingredients}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Price & Action Button -->
+                        <div class="px-5 pb-5 pt-3 flex items-center justify-between gap-3 border-t border-stone-800/60 mt-2">
+                            <div>
+                                <span class="text-[11px] text-stone-400 block">Narxi</span>
+                                <span class="text-lg font-bold text-gold-400">${formatPrice(item.price)}</span>
+                            </div>
+
+                            ${qty === 0 ? `
+                                <button 
+                                    onclick="addToCart(${item.id})"
+                                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-espresso-800 hover:bg-gold-500 text-amber-50 hover:text-espresso-950 border border-stone-700 hover:border-gold-500 font-semibold text-sm transition-all active:scale-95"
+                                >
+                                    <i class="fa-solid fa-plus text-xs"></i>
+                                    <span>Savatga qo'shish</span>
+                                </button>
+                            ` : `
+                                <div class="inline-flex items-center gap-2 bg-espresso-950 border border-gold-500/50 rounded-2xl p-1">
+                                    <button 
+                                        onclick="updateQuantity(${item.id}, -1)"
+                                        class="w-8 h-8 rounded-xl bg-espresso-800 hover:bg-espresso-700 text-amber-50 flex items-center justify-center transition-colors"
+                                        aria-label="Kamaytirish"
+                                    >
+                                        <i class="fa-solid fa-minus text-xs"></i>
+                                    </button>
+                                    <span class="w-6 text-center font-bold text-sm text-gold-400">${qty}</span>
+                                    <button 
+                                        onclick="updateQuantity(${item.id}, 1)"
+                                        class="w-8 h-8 rounded-xl bg-gold-500 hover:bg-gold-400 text-espresso-950 flex items-center justify-center transition-colors"
+                                        aria-label="Ko'paytirish"
+                                    >
+                                        <i class="fa-solid fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                            `}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // 7. SEARCH & FILTER HANDLERS
+        function setupSearchListeners() {
+            const desktopInput = document.getElementById('desktopSearchInput');
+            const mobileInput = document.getElementById('mobileSearchInput');
+            const clearDesktop = document.getElementById('clearDesktopSearch');
+            const clearMobile = document.getElementById('clearMobileSearch');
+
+            const handleInput = (val) => {
+                searchQuery = val;
+                desktopInput.value = val;
+                mobileInput.value = val;
+                
+                clearDesktop.classList.toggle('hidden', !val);
+                clearMobile.classList.toggle('hidden', !val);
+                renderMenu();
+            };
+
+            desktopInput.addEventListener('input', (e) => handleInput(e.target.value));
+            mobileInput.addEventListener('input', (e) => handleInput(e.target.value));
+
+            clearDesktop.addEventListener('click', () => handleInput(''));
+            clearMobile.addEventListener('click', () => handleInput(''));
+        }
+
+        function resetFilters() {
+            selectedCategory = 'all';
+            searchQuery = '';
+            document.getElementById('desktopSearchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            document.getElementById('clearDesktopSearch').classList.add('hidden');
+            document.getElementById('clearMobileSearch').classList.add('hidden');
+            renderCategories();
+            renderMenu();
+        }
+
+        // 8. CART OPERATIONS
+        function addToCart(itemId) {
+            const existing = cart.find(c => c.id === itemId);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ id: itemId, qty: 1 });
+            }
+            const item = MENU_ITEMS.find(m => m.id === itemId);
+            showToast(`"${item.name}" savatchaga qo'shildi`);
+            renderMenu();
+            updateCartUI();
+        }
+
+        function updateQuantity(itemId, delta) {
+            const index = cart.findIndex(c => c.id === itemId);
+            if (index === -1) return;
+
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            renderMenu();
+            updateCartUI();
+        }
+
+        function removeFromCart(itemId) {
+            cart = cart.filter(c => c.id !== itemId);
+            renderMenu();
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cartBadge');
+            const subtitle = document.getElementById('cartDrawerSubtitle');
+            const container = document.getElementById('cartItemsContainer');
+            const emptyMsg = document.getElementById('emptyCartMessage');
+            const orderForm = document.getElementById('orderForm');
+            const cartFooter = document.getElementById('cartFooter');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            badge.textContent = totalItems;
+            subtitle.textContent = `${totalItems} ta mahsulot tanlangan`;
+
+            if (cart.length === 0) {
+                container.innerHTML = '';
+                emptyMsg.classList.remove('hidden');
+                orderForm.classList.add('hidden');
+                cartFooter.classList.add('hidden');
+                return;
+            }
+
+            emptyMsg.classList.add('hidden');
+            orderForm.classList.remove('hidden');
+            cartFooter.classList.remove('hidden');
+
+            let subtotal = 0;
+
+            container.innerHTML = cart.map(cItem => {
+                const dish = MENU_ITEMS.find(m => m.id === cItem.id);
+                const itemTotal = dish.price * cItem.qty;
+                subtotal += itemTotal;
+
+                return `
+                    <div class="flex items-center gap-3.5 p-3 rounded-2xl bg-espresso-950/90 border border-stone-800">
+                        <img 
+                            src="${dish.image}" 
+                            alt="${dish.name}" 
+                            onerror="this.src='https://placehold.co/100x100/231a15/f59e0b?text=Taom'"
+                            class="w-16 h-16 rounded-xl object-cover shrink-0"
+                        >
+                        <div class="flex-1 min-w-0">
+                            <h5 class="text-sm font-semibold text-amber-50 truncate">${dish.name}</h5>
+                            <p class="text-xs text-gold-400 font-medium mt-0.5">${formatPrice(itemTotal)}</p>
+                            
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="updateQuantity(${dish.id}, -1)" class="w-6 h-6 rounded-lg bg-espresso-800 hover:bg-espresso-700 text-stone-200 flex items-center justify-center text-xs">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                                <span class="text-xs font-bold text-white w-5 text-center">${cItem.qty}</span>
+                                <button onclick="updateQuantity(${dish.id}, 1)" class="w-6 h-6 rounded-lg bg-gold-500 hover:bg-gold-400 text-espresso-950 flex items-center justify-center text-xs">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${dish.id})" class="text-stone-500 hover:text-rose-400 p-2 transition-colors" title="O'chirish">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            // Calculate totals
+            document.getElementById('subtotalPrice').textContent = formatPrice(subtotal);
+            
+            const deliveryFeeRow = document.getElementById('deliveryFeeRow');
+            const deliveryFeeText = document.getElementById('deliveryFeeText');
+            let finalTotal = subtotal;
+
+            if (orderType === 'delivery') {
+                deliveryFeeRow.classList.remove('hidden');
+                if (subtotal >= FREE_DELIVERY_THRESHOLD) {
+                    deliveryFeeText.innerHTML = `<span class="text-emerald-400 font-medium">Bepul</span>`;
+                } else {
+                    deliveryFeeText.textContent = formatPrice(DELIVERY_FEE);
+                    finalTotal += DELIVERY_FEE;
+                }
+            } else {
+                deliveryFeeRow.classList.add('hidden');
+            }
+
+            document.getElementById('totalPrice').textContent = formatPrice(finalTotal);
+        }
+
+        function setOrderType(type) {
+            orderType = type;
+            const btnDelivery = document.getElementById('btnDelivery');
+            const btnDineIn = document.getElementById('btnDineIn');
+            const deliveryFields = document.getElementById('deliveryFields');
+            const dineInFields = document.getElementById('dineInFields');
+
+            if (type === 'delivery') {
+                btnDelivery.className = "py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 bg-gold-500 text-espresso-950 transition-all";
+                btnDineIn.className = "py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 text-stone-400 hover:text-white transition-all";
+                deliveryFields.classList.remove('hidden');
+                dineInFields.classList.add('hidden');
+            } else {
+                btnDineIn.className = "py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 bg-gold-500 text-espresso-950 transition-all";
+                btnDelivery.className = "py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 text-stone-400 hover:text-white transition-all";
+                dineInFields.classList.remove('hidden');
+                deliveryFields.classList.add('hidden');
+            }
+            updateCartUI();
+        }
+
+        function toggleCartDrawer(open) {
+            const overlay = document.getElementById('cartOverlay');
+            if (open) {
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // 9. SUBMIT ORDER
+        function submitOrder() {
+            if (cart.length === 0) return;
+
+            if (orderType === 'delivery') {
+                const phone = document.getElementById('deliveryPhone').value.trim();
+                const address = document.getElementById('deliveryAddress').value.trim();
+                if (!phone || !address) {
+                    showToast("Iltimos, telefon raqam va manzilni kiriting!", true);
+                    return;
+                }
+                openConfirmationModal(
+                    "Buyurtmangiz qabul qilindi!",
+                    `Yetkazib berish manzili: ${address}. Kuryerimiz 35-45 daqiqa ichida yetkazib beradi. Yoqimli ishtaha!`
+                );
+            } else {
+                const table = document.getElementById('tableNumber').value.trim();
+                if (!table) {
+                    showToast("Iltimos, stol raqamini kiriting!", true);
+                    return;
+                }
+                openConfirmationModal(
+                    `${table}-stolga buyurtma qabul qilindi!`,
+                    "Oshpazlarimiz taomlarni tayyorlashni boshlashdi. Tez orada ofitsiantimiz dasturxoningizga tortadi!"
+                );
+            }
+
+            // Reset cart
+            cart = [];
+            renderMenu();
+            updateCartUI();
+            toggleCartDrawer(false);
+        }
+
+        // 10. RESERVATION MODAL LOGIC
+        function setDefaultReservationDateTime() {
+            const input = document.getElementById('resDateTime');
+            const now = new Date();
+            now.setHours(now.getHours() + 2);
+            now.setMinutes(0);
+            const isoString = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+            input.value = isoString;
+        }
+
+        function openReservationModal() {
+            const modal = document.getElementById('reservationModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReservationModal() {
+            const modal = document.getElementById('reservationModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function submitReservation(e) {
+            e.preventDefault();
+            const name = document.getElementById('resName').value.trim();
+            const guests = document.getElementById('resGuests').value;
+            const dateTimeRaw = document.getElementById('resDateTime').value;
+
+            const formattedDate = dateTimeRaw ? dateTimeRaw.replace('T', ' soat ') : '';
+
+            closeReservationModal();
+            openConfirmationModal(
+                "Stol muvaffaqiyatli band qilindi!",
+                `Hurmatli ${name}, ${guests} uchun (${formattedDate}) joy ajratildi. Sizni Samarqand Darvozasi restoranida kutib qolamiz!`
+            );
+            document.getElementById('reservationForm').reset();
+            setDefaultReservationDateTime();
+        }
+
+        // 11. CONFIRMATION MODAL & TOAST HELPERS
+        function openConfirmationModal(title, message) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            const modal = document.getElementById('confirmationModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfirmationModal() {
+            const modal = document.getElementById('confirmationModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        let toastTimeout;
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastText.textContent = message;
+            toastIcon.className = isError 
+                ? "fa-solid fa-circle-exclamation text-rose-400" 
+                : "fa-solid fa-check-circle text-gold-400";
+
+            toast.classList.remove('opacity-0', 'translate-y-4');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+            }, 2600);
+        }
+    </script>
+</body>
+</html>
